@@ -83,6 +83,8 @@ export default function CheckoutPage() {
       prefill: {},
       theme: { color: '#1a9e8e' },
       modal: { ondismiss: () => setPaying(false) },
+      callback_url: `${window.location.origin}/api/payment/verify-redirect?orderId=${data.orderId}`,
+      redirect: true,
     }
 
     const rzp = new window.Razorpay(options)
