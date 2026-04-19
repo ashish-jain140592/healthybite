@@ -1,31 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
-import { createClient } from '@/lib/supabase/server'
+import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { sendOrderConfirmation } from '@/lib/email'
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || ''
 
 export async function POST(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const orderId = searchParams.get('orderId')
 
   const formData = await req.formData()
-  const razorpay_order_id  = formData.get('razorpay_order_id') as string
+  const razorpay_order_id   = formData.get('razorpay_order_id') as string
   const razorpay_payment_id = formData.get('razorpay_payment_id') as string
   const razorpay_signature  = formData.get('razorpay_signature') as string
 
-  // Verify signature
-  const body = `${razorpay_order_id}|${razorpay_payment_id}`
+  // Verify HMAC signature
   const expectedSignature = crypto
     .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
-    .update(body)
+    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
     .digest('hex')
-
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || ''
 
   if (expectedSignature !== razorpay_signature) {
     return NextResponse.redirect(`${siteUrl}/checkout?error=payment_failed`)
   }
 
-  const supabase = await createClient()
+  // Use service role — no browser session available in redirect
+  const supabase = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
   const { data: order } = await supabase
     .from('orders')
     .update({ payment_status: 'paid', status: 'confirmed', razorpay_payment_id })
@@ -34,7 +38,8 @@ export async function POST(req: NextRequest) {
     .single()
 
   if (order) {
-    const { data: { user } } = await supabase.auth.getUser()
+    // Fetch user email via service role
+    const { data: { user } } = await supabase.auth.admin.getUserById(order.user_id)
     if (user?.email) {
       const addr = order.addresses
       sendOrderConfirmation({
