@@ -1,7 +1,5 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 const PLAN_LABELS: Record<string, string> = {
   single: 'Single Day',
   weekly: 'Weekly (7 days)',
@@ -31,6 +29,7 @@ export async function sendOrderConfirmation(params: OrderConfirmationParams) {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
   })
 
+  const resend = new Resend(process.env.RESEND_API_KEY)
   await resend.emails.send({
     from: 'HealthyBite <orders@healthybite.in>',
     to,
