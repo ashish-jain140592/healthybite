@@ -233,3 +233,158 @@ nav {
 .nav-mobile a:last-child { border-bottom: none; }
 .nav-mobile a:hover { color: #1a9e8e; }
 .nav-mobile.open { display: flex; }
+
+/* ─── AUTH PAGES ────────────────────────────────────── */
+.auth-layout {
+  min-height: 100vh;
+  background: #f4faf9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.auth-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+}
+.auth-title { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 6px; }
+.auth-subtitle { font-size: 14px; color: #888; margin-bottom: 28px; }
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+.auth-error { background: #fde8e0; color: #c0390e; font-size: 13px; padding: 10px 14px; border-radius: 10px; }
+.auth-success { text-align: center; }
+.auth-success h2 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+.auth-success p { font-size: 14px; color: #666; line-height: 1.6; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 13px; font-weight: 600; color: #444; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #222;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: #1a9e8e; }
+.auth-btn {
+  background: #1a9e8e; color: #fff;
+  border: none; border-radius: 30px;
+  padding: 13px; font-size: 15px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+  transition: background 0.2s; margin-top: 4px;
+  text-decoration: none;
+}
+.auth-btn:hover { background: #0d7b6e; }
+.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.auth-footer { text-align: center; font-size: 13px; color: #888; margin-top: 20px; }
+.auth-footer a { color: #1a9e8e; font-weight: 700; text-decoration: none; }
+
+/* ─── CHECKOUT PAGE ─────────────────────────────────── */
+.checkout-layout {
+  min-height: 100vh;
+  background: #f4faf9;
+  padding: 40px 24px;
+}
+.checkout-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 700px) {
+  .checkout-inner { grid-template-columns: 1fr; }
+}
+.checkout-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+}
+.checkout-section h2 { font-size: 16px; font-weight: 800; color: #111; margin-bottom: 20px; }
+.plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 500px) { .plan-grid { grid-template-columns: 1fr; } }
+.plan-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  text-align: center;
+}
+.plan-card.selected { border-color: #1a9e8e; background: #f0faf8; }
+.plan-card .plan-name { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 4px; }
+.plan-card .plan-price { font-size: 20px; font-weight: 800; color: #1a9e8e; }
+.plan-card .plan-desc { font-size: 11px; color: #888; margin-top: 4px; }
+.plan-badge { display: inline-block; background: #ff7043; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-top: 6px; }
+.slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+@media (max-width: 500px) { .slot-grid { grid-template-columns: 1fr; } }
+.slot-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+.slot-card.selected { border-color: #1a9e8e; background: #f0faf8; }
+.slot-card .slot-icon { font-size: 22px; margin-bottom: 4px; }
+.slot-card .slot-name { font-size: 12px; font-weight: 700; color: #111; }
+.slot-card .slot-time { font-size: 11px; color: #888; margin-top: 2px; }
+.address-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 500px) { .address-grid { grid-template-columns: 1fr; } }
+.address-grid .full-width { grid-column: 1 / -1; }
+
+/* Order summary */
+.order-summary {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  position: sticky;
+  top: 80px;
+}
+.order-summary h2 { font-size: 16px; font-weight: 800; color: #111; margin-bottom: 20px; }
+.summary-row { display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-bottom: 10px; }
+.summary-row.total { font-weight: 800; font-size: 16px; color: #111; border-top: 1px solid #f0f0f0; padding-top: 14px; margin-top: 4px; }
+.pay-btn {
+  width: 100%; background: #ff7043; color: #fff;
+  border: none; border-radius: 30px;
+  padding: 14px; font-size: 15px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+  margin-top: 20px; transition: background 0.2s;
+}
+.pay-btn:hover { background: #e64a19; }
+.pay-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ─── ORDERS PAGE ───────────────────────────────────── */
+.orders-layout { min-height: 100vh; background: #f4faf9; padding: 40px 24px; }
+.orders-inner { max-width: 760px; margin: 0 auto; }
+.orders-inner h1 { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 24px; }
+.order-card {
+  background: #fff; border-radius: 16px;
+  padding: 24px; margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+  flex-wrap: wrap;
+}
+.order-card-info h4 { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 4px; }
+.order-card-info p { font-size: 13px; color: #888; }
+.order-status {
+  font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px;
+}
+.status-pending    { background: #fff3e0; color: #e65100; }
+.status-confirmed  { background: #e0f5f2; color: #0d7b6e; }
+.status-delivered  { background: #e8f5e9; color: #2e7d32; }
+.status-cancelled  { background: #fde8e0; color: #c0390e; }
