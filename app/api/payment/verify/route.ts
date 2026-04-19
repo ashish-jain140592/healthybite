@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { createClient } from '@/lib/supabase/server'
+import { sendOrderConfirmation } from '@/lib/email'
 
 export async function POST(req: NextRequest) {
   const {
@@ -21,16 +22,36 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
-  // Update order in Supabase
   const supabase = await createClient()
-  await supabase
+
+  // Update order status
+  const { data: order } = await supabase
     .from('orders')
-    .update({
-      payment_status: 'paid',
-      status: 'confirmed',
-      razorpay_payment_id,
-    })
+    .update({ payment_status: 'paid', status: 'confirmed', razorpay_payment_id })
     .eq('id', orderId)
+    .select('*, addresses(line1, city, pincode)')
+    .single()
+
+  // Send confirmation email (non-blocking)
+  if (order) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user?.email) {
+      const addr = order.addresses
+      const addressStr = addr
+        ? `${addr.line1}, ${addr.city} — ${addr.pincode}`
+        : 'Your delivery address'
+
+      sendOrderConfirmation({
+        to: user.email,
+        orderId: order.id,
+        plan: order.plan,
+        slot: order.delivery_slot,
+        amount: Number(order.total_amount),
+        deliveryDate: order.delivery_date,
+        address: addressStr,
+      }).catch(console.error)
+    }
+  }
 
   return NextResponse.json({ success: true })
 }
